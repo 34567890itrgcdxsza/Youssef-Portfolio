@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="site-title">Youssef Abdelsamie - Portfolio</title>
+    <meta name="description" content="Portfolio and Services.">
+    <link rel="icon" href="img/logo.png" type="image/png">
+    
+    <style>
+        :root { --bg-primary: #ffffff; --bg-secondary: #f4f6f9; --text-primary: #344765; --text-secondary: #555555; --header-bg: #344765; --gold: #e5d25c; --overlay-start: rgba(238, 238, 238, 0.85); --overlay-end: rgba(238, 238, 238, 0.95); --card-shadow: 0 10px 30px rgba(52, 71, 101, 0.08); --card-shadow-hover: 0 20px 40px rgba(52, 71, 101, 0.15); }
+        body.dark-mode { --bg-primary: #111827; --bg-secondary: #1f2937; --text-primary: #f9fafb; --text-secondary: #d1d5db; --header-bg: #0b0f19; --overlay-start: rgba(31, 41, 55, 0.85); --overlay-end: rgba(31, 41, 55, 0.95); --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); --card-shadow-hover: 0 20px 50px rgba(229, 210, 92, 0.15); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-primary); color: var(--text-primary); line-height: 1.6; transition: background-color 0.4s ease, color 0.4s ease; }
+        ::-webkit-scrollbar { width: 10px; } ::-webkit-scrollbar-track { background: var(--bg-primary); } ::-webkit-scrollbar-thumb { background: var(--header-bg); border-radius: 5px; } ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+        header { background-color: var(--header-bg); padding: 1rem 5%; position: fixed; width: 100%; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.15); transition: background-color 0.4s ease; }
+        .logo img { height: 45px; width: auto; display: block; border-radius: 5px; }
+        .nav-container { display: flex; align-items: center; gap: 2rem; }
+        nav ul { list-style: none; display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+        nav ul li a { color: #ffffff; text-decoration: none; font-weight: 500; transition: color 0.3s ease; font-size: 1.1rem; cursor: pointer; position: relative; padding-bottom: 4px; }
+        nav ul li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px; background-color: var(--gold); transition: width 0.3s ease; border-radius: 2px; }
+        nav ul li a:hover::after, nav ul li a.active-link::after { width: 100%; }
+        nav ul li a:hover, nav ul li a.active-link { color: var(--gold); }
+        .controls { display: flex; align-items: center; gap: 15px; }
+        .theme-btn { background: none; border: none; color: var(--gold); font-size: 1.5rem; cursor: pointer; transition: transform 0.3s; }
+        .theme-btn:hover { transform: scale(1.2); }
+        .lang-btn { background: none; border: 2px solid var(--gold); color: var(--gold); padding: 4px 12px; border-radius: 20px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .lang-btn:hover { background-color: var(--gold); color: var(--header-bg); }
+        .menu-toggle { display: none; background: none; border: none; color: var(--gold); font-size: 2rem; cursor: pointer; transition: 0.3s; }
+        .page-content { display: none; animation: fadeIn 0.5s ease-in-out; min-height: 80vh; }
+        .page-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .sub-page-header { padding-top: 120px; padding-bottom: 20px; text-align: center; background-color: var(--bg-secondary); }
+        section { padding: 80px 5%; transition: background-color 0.4s ease; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 2px; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 4px; background-color: var(--gold); margin: 15px auto 0; border-radius: 2px; }
+        .hero { min-height: 100vh; display: flex; justify-content: center; align-items: center; gap: 5%; flex-wrap: wrap-reverse; background: linear-gradient(var(--overlay-start), var(--overlay-end)), url('img/hero-background.jpg') no-repeat center center/cover; }
+        .hero-text { flex: 1; min-width: 300px; }
+        .hero h1 { font-size: 4rem; margin-bottom: 1rem; line-height: 1.2; }
+        .hero h2 { font-size: 1.5rem; color: var(--text-primary); margin-bottom: 2rem; display: inline-block; border-left: 4px solid var(--gold); padding-left: 15px; }
+        .btn { padding: 12px 30px; background-color: var(--gold); color: #344765; text-decoration: none; font-weight: bold; font-size: 1.1rem; border-radius: 30px; display: inline-block; box-shadow: 0 4px 15px rgba(229, 210, 92, 0.4); cursor: pointer; border: none; text-align: center; transition: all 0.3s; }
+        .btn:hover { background-color: var(--header-bg); color: #ffffff; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0, 0.4); }
+        @keyframes floatImage { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        .hero-image-container { flex: 1; display: flex; justify-content: center; min-width: 300px; animation: floatImage 4s ease-in-out infinite; }
+        .hero-image { width: 350px; height: 350px; border-radius: 50%; object-fit: cover; border: 8px solid var(--bg-primary); box-shadow: var(--card-shadow); transition: box-shadow 0.4s ease, transform 0.4s ease; }
+        .hero-image:hover { box-shadow: var(--card-shadow-hover); transform: scale(1.02); }
+        .about { background-color: var(--bg-primary); text-align: center; max-width: 900px; margin: auto; }
+        .about p { font-size: 1.2rem; color: var(--text-secondary); line-height: 1.8; white-space: pre-line; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; max-width: 1200px; margin: auto; }
+        .card { background-color: var(--bg-primary); border-radius: 15px; overflow: hidden; box-shadow: var(--card-shadow); transition: all 0.35s ease; display: flex; flex-direction: column; border: 1px solid var(--bg-secondary);}
+        .card:hover { transform: translateY(-10px); box-shadow: var(--card-shadow-hover); border-color: var(--gold);}
+        .card-image-wrapper { position: relative; overflow: hidden; height: 200px; border-bottom: 3px solid var(--gold); }
+        .card-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .card:hover .card-image { transform: scale(1.1); }
+        .card-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 15, 25, 0.7), transparent); opacity: 0; transition: opacity 0.4s ease; }
+        .card:hover .card-img-overlay { opacity: 1; }
+        .card-content { padding: 1.5rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .card h3 { color: var(--text-primary); margin-bottom: 10px; font-size: 1.4rem; }
+        .card p { color: var(--text-secondary); margin-bottom: 15px; }
+        .btn-outline { background: transparent; border: 2px solid var(--gold); color: var(--text-primary); padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; align-self: center; margin-top: auto; text-decoration: none; text-align: center; display: inline-block; }
+        .btn-outline:hover { background: var(--gold); color: var(--header-bg); transform: translateY(-3px); box-shadow: 0 4px 10px rgba(229, 210, 92, 0.3); }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 1100px; margin: auto; }
+        .skill-card { background-color: var(--bg-primary); padding: 2rem; border-radius: 10px; box-shadow: var(--card-shadow); border-bottom: 4px solid var(--gold); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid var(--bg-secondary); }
+        .skill-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+        .progress-bar { width: 100%; background-color: var(--bg-secondary); border-radius: 10px; height: 12px; overflow: hidden; margin-top: 10px; }
+        .progress { height: 100%; background-color: var(--header-bg); border-radius: 10px; transition: width 1s; }
+        .skill-percent { text-align: right; font-size: 0.9rem; margin-top: 8px; font-weight: bold; color: var(--gold); }
+        .experience-education { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 3rem; max-width: 1200px; margin: auto; }
+        .timeline-item { display: flex; gap: 20px; align-items: flex-start; background-color: var(--bg-primary); padding: 2rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 6px solid var(--gold); transition: all 0.3s ease; box-shadow: var(--card-shadow); border: 1px solid var(--bg-secondary); }
+        .timeline-item:hover { box-shadow: var(--card-shadow-hover); transform: translateX(5px); }
+        .timeline-item h3 { color: var(--text-primary); margin-bottom: 8px; font-size: 1.3rem; }
+        .timeline-item h4 { color: var(--gold); margin-bottom: 12px; font-size: 1rem; font-weight: bold; }
+        .timeline-item p { color: var(--text-secondary); }
+        .modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); align-items: center; justify-content: center; animation: fadeIn 0.3s; backdrop-filter: blur(4px); }
+        .modal-box { background-color: var(--bg-primary); color: var(--text-primary); padding: 30px; border-radius: 15px; width: 90%; max-width: 700px; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; border-top: 5px solid var(--gold); }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: var(--text-secondary); cursor: pointer; transition: 0.3s; }
+        .modal-close:hover { color: var(--gold); transform: rotate(90deg); }
+        .contact-section { background-color: var(--header-bg); color: #ffffff; text-align: center; margin-top: 50px; padding: 80px 5%; }
+        .contact-info { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 2rem; }
+        .contact-link { display: flex; align-items: center; gap: 10px; background-color: rgba(255,255,255,0.05); padding: 15px 25px; border-radius: 8px; border: 1px solid rgba(229, 210, 92, 0.2); color: #ffffff; text-decoration: none; font-size: 1.1rem; transition: all 0.3s ease; }
+        .contact-link:hover { background-color: var(--gold); color: var(--header-bg); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(229, 210, 92, 0.3); }
+        footer { background-color: #0b0f19; color: #aaa; text-align: center; padding: 2rem; font-size: 1rem; }
+        #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; font-size: 24px; background-color: var(--gold); color: var(--header-bg); border: none; cursor: pointer; width: 50px; height: 50px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: 0.3s; }
+        #scrollTopBtn:hover { background-color: var(--header-bg); color: var(--gold); transform: translateY(-5px); }
+        [dir="rtl"] .hero h2 { border-left: none; border-right: 4px solid var(--gold); padding-left: 0; padding-right: 15px; }
+        [dir="rtl"] .timeline-item { border-left: none; border-right: 6px solid var(--gold); }
+        [dir="rtl"] .timeline-item:hover { transform: translateX(-5px); }
+        [dir="rtl"] .skill-percent { text-align: left; }
+        [dir="rtl"] #scrollTopBtn { right: auto; left: 30px; }
+        [dir="rtl"] .modal-close { right: auto; left: 20px; }
+        @media (max-width: 900px) {
+            .menu-toggle { display: block; } 
+            nav ul { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--header-bg); padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 15px rgba(0,0,0,0.3); }
+            nav ul.active { display: flex; }
+            nav ul li { text-align: center; margin: 10px 0; }
+            .nav-container { gap: 15px; }
+            .hero { text-align: center; padding-top: 120px; }
+            .hero h1 { font-size: 2.8rem; }
+            .timeline-item { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a onclick="navigate('home')" class="logo" style="cursor: pointer;">
+            <img src="img/logo.png" id="nav-logo" alt="Logo" onerror="this.outerHTML='<span style=\'color:var(--gold); font-size:1.8rem; font-weight:900;\'>YA.</span>'">
+        </a>
+        <div class="nav-container">
+            <nav>
+                <ul id="nav-menu">
+                    <li><a onclick="navigate('home')" class="nav-link active-link" data-i18n="nav_home">Home</a></li>
+                    <li><a onclick="navigate('services-page')" class="nav-link" data-i18n="nav_services">Services</a></li>
+                    <li><a onclick="navigate('education')" class="nav-link" data-i18n="nav_exp">Resume</a></li>
+                    <li><a onclick="navigate('certificates')" class="nav-link" data-i18n="nav_certs">Certificates</a></li>
+                </ul>
+            </nav>
+            <div class="controls">
+                <button id="lang-toggle" class="lang-btn">عربي</button>
+                <button id="theme-toggle" class="theme-btn">🌙</button>
+                <button id="mobile-menu-btn" class="menu-toggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <div id="home" class="page-content active">
+        <section class="hero">
+            <div class="hero-text">
+                <h1 data-i18n="hero_title">Loading...</h1>
+                <h2 data-i18n="hero_subtitle">Loading...</h2><br>
+                <button onclick="document.getElementById('contact').scrollIntoView();" class="btn" data-i18n="hero_btn">Hire Me Now</button>
+            </div>
+            <div class="hero-image-container">
+                <img src="img/DSC_0374 copy.jpg" alt="Profile" class="hero-image disable-interaction" oncontextmenu="return false;" ondragstart="return false;">            
+            </div>
+        </section>
+        <section class="about">
+            <h2 class="section-title" data-i18n="about_title">Why Work With Me?</h2>
+            <p data-i18n="about_text" style="white-space: pre-line;">Loading about text...</p>
+        </section>
+        <section class="projects" style="background-color: var(--bg-secondary);">
+            <h2 class="section-title" data-i18n="proj_title">Recent Work</h2>
+            <div class="card-grid" id="dynamic-projects"><p style="text-align: center; width: 100%; color: var(--gold); grid-column: 1/-1;">Loading projects...</p></div>
+        </section>
+    </div>
+
+    <div id="services-page" class="page-content">
+        <div class="sub-page-header"><h1 class="section-title" data-i18n="nav_services" style="margin-bottom: 0;">My Services</h1></div>
+        <section>
+            <div class="card-grid" id="dynamic-services"><p style="text-align: center; width: 100%; color: var(--gold); grid-column: 1/-1;">Loading services...</p></div>
+        </section>
+    </div>
+
+    <div id="education" class="page-content">
+        <div class="sub-page-header"><h1 class="section-title" data-i18n="nav_exp" style="margin-bottom: 0;">Resume</h1></div>
+        <section>
+            <div class="experience-education">
+                <div>
+                    <h2 class="section-title" data-i18n="exp_edu_title1" style="font-size: 2rem;">Experience</h2>
+                    <div id="dynamic-experience"><p style="color: var(--gold);">Loading...</p></div>
+                </div>
+                <div>
+                    <h2 class="section-title" data-i18n="exp_edu_title2" style="font-size: 2rem;">Education</h2>
+                    <div id="dynamic-education"><p style="color: var(--gold);">Loading...</p></div>
+                </div>
+            </div>
+            <h2 class="section-title" data-i18n="skills_title" style="margin-top: 60px;">Technical Skills</h2>
+            <div class="skills-grid" id="dynamic-skills"><p style="text-align: center; width: 100%; color: var(--gold); grid-column: 1/-1;">Loading skills...</p></div>
+        </section>
+    </div>
+
+    <div id="certificates" class="page-content">
+        <div class="sub-page-header"><h1 class="section-title" data-i18n="nav_certs" style="margin-bottom: 0;">Certificates</h1></div>
+        <section>
+            <div class="card-grid" id="dynamic-certificates"><p style="text-align: center; width: 100%; color: var(--gold); grid-column: 1/-1;">Loading certificates...</p></div>
+        </section>
+    </div>
+
+    <section class="contact-section" id="contact">
+        <h2 class="section-title" data-i18n="contact_title" style="color: white; margin-bottom: 10px;">Ready?</h2>
+        <p data-i18n="contact_subtitle" style="margin-bottom: 30px; font-size: 1.1rem;">Send a message...</p>
+        <div class="contact-info" id="dynamic-contact-links">
+            <p style="color:var(--gold);">Loading contact links...</p>
+        </div>
+    </section>
+
+    <footer><p data-i18n="footer_text">© 2026 Portfolio.</p></footer>
+    <button id="scrollTopBtn" title="Go to top">⬆</button>
+
+    <script>
+        function navigate(pageId) { document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active')); document.getElementById(pageId).classList.add('active'); document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active-link')); if(event && event.currentTarget) event.currentTarget.classList.add('active-link'); window.scrollTo({ top: 0, behavior: 'smooth' }); if(window.innerWidth <= 900) { document.getElementById('nav-menu').classList.remove('active'); document.getElementById('mobile-menu-btn').innerHTML = '☰'; } }
+        function openModal(modalId) { document.getElementById(modalId).style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function closeOutside(event, modalId) { if (event.target.id === modalId) closeModal(modalId); }
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-mode'); themeToggleBtn.textContent = '☀️'; }
+        themeToggleBtn.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light'); themeToggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙'; });
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => { const m = document.getElementById('nav-menu'); m.classList.toggle('active'); document.getElementById('mobile-menu-btn').innerHTML = m.classList.contains('active') ? '✖' : '☰'; });
+        const scrollTopBtn = document.getElementById("scrollTopBtn"); window.onscroll = function() { scrollTopBtn.style.display = (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none"; }; scrollTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        const translations = {
+            en: { nav_home: "Home", nav_services: "Services", nav_exp: "Resume", nav_certs: "Certificates", hero_title: "I'M YOUSSEF ABDELSAMIE", hero_subtitle: "DATA ANALYST & SOFTWARE DEVELOPER", hero_btn: "Hire Me Now", about_title: "Why Work With Me?", about_text: "I transform complex business problems...", btn_order: "Request Service", skills_title: "Technical Skills", exp_edu_title1: "Experience", exp_edu_title2: "Education", proj_title: "Recent Work", btn_more: "More Details", btn_download: "Download", btn_github: "View Code", contact_title: "Ready to start?", contact_subtitle: "Send me a message.", footer_text: "© 2026 Portfolio." },
+            ar: { nav_home: "الرئيسية", nav_services: "الخدمات", nav_exp: "السيرة الذاتية", nav_certs: "الشهادات", hero_title: "أنا يوسف عبد السميع", hero_subtitle: "محلل بيانات ومطور برمجيات", hero_btn: "اطلب خدمة", about_title: "لماذا تختار العمل معي؟", about_text: "أقوم بتحويل المشاكل البرمجية...", btn_order: "اطلب الخدمة", skills_title: "المهارات التقنية", exp_edu_title1: "الخبرات", exp_edu_title2: "التعليم", proj_title: "أحدث الأعمال", btn_more: "التفاصيل", btn_download: "تحميل", btn_github: "الكود", contact_title: "جاهز للبدء؟", contact_subtitle: "تواصل معي.", footer_text: "© 2026 Portfolio." }
+        };
+
+        const langToggleBtn = document.getElementById('lang-toggle');
+        let currentLang = localStorage.getItem('lang') || 'en';
+
+        window.setLanguage = function(lang) {
+            currentLang = lang; localStorage.setItem('lang', lang);
+            document.documentElement.lang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                if (translations[lang][el.getAttribute('data-i18n')]) el.innerHTML = translations[lang][el.getAttribute('data-i18n')];
+            });
+            langToggleBtn.textContent = lang === 'en' ? 'عربي' : 'English';
+            if(window.renderAllDynamicData) window.renderAllDynamicData(); 
+        }
+        window.setLanguage(currentLang);
+        langToggleBtn.addEventListener('click', () => window.setLanguage(currentLang === 'en' ? 'ar' : 'en'));
+    </script>
+    
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){ var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0]; s1.async=true; s1.src='https://embed.tawk.to/69b5e076c092721c387e2615/1jjn79jsa'; s1.charset='UTF-8'; s1.setAttribute('crossorigin','*'); s0.parentNode.insertBefore(s1,s0); })();
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, getDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB-TZS7DptnKkOKzg38_L5T-E_yu7VTVCc",
+            authDomain: "youssef-portfolio-24824.firebaseapp.com",
+            projectId: "youssef-portfolio-24824",
+            storageBucket: "youssef-portfolio-24824.firebasestorage.app",
+            messagingSenderId: "872690338650",
+            appId: "1:872690338650:web:ae007334e1a52abc5f8163"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let dbData = { general: {}, projects: [], services: [], resume: [], skills: [], certificates: [] };
+
+        async function fetchCollection(colName) {
+            const q = query(collection(db, colName), orderBy("createdAt", "desc"));
+            const snap = await getDocs(q);
+            let arr = [];
+            snap.forEach(doc => { arr.push({ id: doc.id, ...doc.data() }); });
+            return arr;
+        }
+
+        async function loadAllData() {
+            try {
+                // الإعدادات العامة
+                const docSnap = await getDoc(doc(db, "settings", "general"));
+                if (docSnap.exists()) {
+                    dbData.general = docSnap.data();
+                    const data = dbData.general;
+                    // حقن النصوص في القاموس
+                    if(data.hero_en) translations.en.hero_title = data.hero_en; if(data.hero_ar) translations.ar.hero_title = data.hero_ar;
+                    if(data.sub_en) translations.en.hero_subtitle = data.sub_en; if(data.sub_ar) translations.ar.hero_subtitle = data.sub_ar;
+                    if(data.about_en) translations.en.about_text = data.about_en; if(data.about_ar) translations.ar.about_text = data.about_ar;
+                    
+                    // تغيير اللوجو واسم الموقع
+                    if(data.logo) document.getElementById('nav-logo').src = data.logo;
+                    document.getElementById('site-title').innerText = currentLang === 'en' ? (data.sitename_en || 'Portfolio') : (data.sitename_ar || 'بورتفوليو');
+                }
+
+                // جلب المجموعات
+                dbData.projects = await fetchCollection("projects");
+                dbData.services = await fetchCollection("services");
+                dbData.resume = await fetchCollection("resume");
+                dbData.skills = await fetchCollection("skills");
+                dbData.certificates = await fetchCollection("certificates");
+
+                window.renderAllDynamicData();
+
+            } catch (error) { console.error("Error loading data:", error); }
+        }
+
+        window.renderAllDynamicData = function() {
+            const lang = currentLang;
+            const btnOrderTxt = lang === 'en' ? 'Request Service' : 'اطلب الخدمة';
+            const btnMoreTxt = lang === 'en' ? 'More Details' : 'تفاصيل الشهادة';
+
+            // 0. اسم الموقع والروابط
+            if(dbData.general.sitename_en) {
+                document.getElementById('site-title').innerText = lang === 'en' ? dbData.general.sitename_en : dbData.general.sitename_ar;
+            }
+            let contactHtml = '';
+            if(dbData.general.email) contactHtml += `<a href="mailto:${dbData.general.email}" class="contact-link"><span>📧</span> <span>${dbData.general.email}</span></a>`;
+            if(dbData.general.wa) contactHtml += `<a href="https://wa.me/${dbData.general.wa}" target="_blank" class="contact-link"><span>💬</span> <span>WhatsApp</span></a>`;
+            if(dbData.general.linkedin) contactHtml += `<a href="${dbData.general.linkedin}" target="_blank" class="contact-link"><span>💼</span> <span>LinkedIn</span></a>`;
+            if(dbData.general.github) contactHtml += `<a href="${dbData.general.github}" target="_blank" class="contact-link"><span>💻</span> <span>GitHub</span></a>`;
+            if(dbData.general.fb) contactHtml += `<a href="${dbData.general.fb}" target="_blank" class="contact-link"><span>📘</span> <span>Facebook</span></a>`;
+            document.getElementById('dynamic-contact-links').innerHTML = contactHtml;
+
+            // 1. المشاريع
+            let p_html = '';
+            dbData.projects.forEach(p => {
+                const title = lang === 'en' ? p.title_en : p.title_ar;
+                const desc = lang === 'en' ? p.desc_en : p.desc_ar;
+                const modalId = 'modal-' + p.id;
+                p_html += `
+                <div class="card">
+                    <div class="card-image-wrapper"><img src="${p.imageUrl}" class="card-image" loading="lazy" alt="${title}"><div class="card-img-overlay"></div></div>
+                    <div class="card-content">
+                        <h3 style="color: var(--text-primary);">${title}</h3><p style="color: var(--text-secondary);">${desc.substring(0, 60)}...</p>
+                        <button class="btn-outline" onclick="openModal('${modalId}')">${lang==='en'?'More Details':'تفاصيل العمل'}</button>
+                    </div>
+                </div>`;
+                
+                let tagsHtml = p.tags ? p.tags.map(t => `<span>${t}</span>`).join('') : '';
+                let btnsHtml = '';
+                if(p.downloadLink) btnsHtml += `<a href="${p.downloadLink}" target="_blank" class="btn">${lang==='en'?'Download':'تحميل'}</a>`;
+                if(p.githubLink) btnsHtml += `<a href="${p.githubLink}" target="_blank" class="btn-outline">GitHub</a>`;
+
+                const modalHtml = `
+                <div id="${modalId}" class="modal-overlay" onclick="closeOutside(event, '${modalId}')">
+                    <div class="modal-box"><span class="modal-close" onclick="closeModal('${modalId}')">×</span>
+                    <h2 style="margin-bottom: 10px; color: var(--gold);">${title}</h2><img src="${p.imageUrl}" style="width:100%; border-radius:10px; margin:15px 0;">
+                    <p style="color: var(--text-primary); font-size: 1.1rem;">${desc}</p><div class="tech-tags">${tagsHtml}</div><div class="modal-buttons">${btnsHtml}</div></div>
+                </div>`;
+                const oldModal = document.getElementById(modalId); if(oldModal) oldModal.remove();
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+            });
+            document.getElementById('dynamic-projects').innerHTML = p_html || '<p>لا توجد أعمال.</p>';
+
+            // 2. الخدمات
+            let s_html = '';
+            dbData.services.forEach(s => {
+                let imgHtml = s.imageUrl ? `<img src="${s.imageUrl}" style="width:100%; height:160px; object-fit:cover; border-radius:10px; margin-bottom:15px; border:1px solid var(--bg-secondary);">` : `<div style="font-size: 3rem; margin-bottom: 10px;">${s.icon || '✨'}</div>`;
+                s_html += `<div class="card"><div class="card-content" style="justify-content: flex-start; gap: 15px;">${imgHtml}<h3>${lang==='en'?s.title_en:s.title_ar}</h3><p>${lang==='en'?s.desc_en:s.desc_ar}</p><button class="btn" onclick="document.getElementById('contact').scrollIntoView();" style="width: 100%; margin-top: auto;">${btnOrderTxt}</button></div></div>`;
+            });
+            document.getElementById('dynamic-services').innerHTML = s_html || '<p>لا توجد خدمات.</p>';
+
+            // 3. السيرة الذاتية
+            let exp_html = '', edu_html = '';
+            dbData.resume.forEach(r => {
+                let imgHtml = r.imageUrl ? `<img src="${r.imageUrl}" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid var(--gold); box-shadow:0 4px 10px rgba(0,0,0,0.1);">` : '';
+                const itemHtml = `<div class="timeline-item">${imgHtml}<div><h3>${lang==='en'?r.title_en:r.title_ar}</h3><h4>${lang==='en'?r.sub_en:r.sub_ar}</h4><p>${lang==='en'?r.desc_en:r.desc_ar}</p></div></div>`;
+                if(r.type === 'experience') exp_html += itemHtml; else edu_html += itemHtml;
+            });
+            document.getElementById('dynamic-experience').innerHTML = exp_html || '<p>...</p>';
+            document.getElementById('dynamic-education').innerHTML = edu_html || '<p>...</p>';
+
+            // 4. المهارات
+            let k_html = '';
+            dbData.skills.forEach(k => {
+                k_html += `<div class="skill-card"><h3>${lang==='en'?k.name_en:k.name_ar}</h3><div class="progress-bar"><div class="progress" style="width: ${k.percentage}%;"></div></div><div class="skill-percent">${k.percentage}%</div></div>`;
+            });
+            document.getElementById('dynamic-skills').innerHTML = k_html || '<p>لا توجد مهارات.</p>';
+
+            // 5. الشهادات (بالصور ونظام النافذة المنبثقة)
+            let c_html = '';
+            dbData.certificates.forEach(c => {
+                const modalId = 'modal-cert-' + c.id;
+                const title = lang === 'en' ? c.title_en : c.title_ar;
+                const desc = lang === 'en' ? c.desc_en : c.desc_ar;
+
+                c_html += `
+                <div class="card">
+                    <div class="card-image-wrapper"><img src="${c.imageUrl}" class="card-image" loading="lazy" alt="${title}" onerror="this.src='https://via.placeholder.com/400x300?text=Certificate'"><div class="card-img-overlay"></div></div>
+                    <div class="card-content">
+                        <h3>${title}</h3><p>${desc}</p>
+                        <button class="btn-outline" onclick="openModal('${modalId}')">${btnMoreTxt}</button>
+                    </div>
+                </div>`;
+
+                const modalHtml = `
+                <div id="${modalId}" class="modal-overlay" onclick="closeOutside(event, '${modalId}')">
+                    <div class="modal-box"><span class="modal-close" onclick="closeModal('${modalId}')">×</span>
+                    <h2 style="margin-bottom: 10px; color: var(--gold);">${title}</h2>
+                    <img src="${c.imageUrl}" style="width:100%; border-radius:10px; margin:15px 0; border: 1px solid var(--bg-secondary);">
+                    <p style="color: var(--text-primary); font-size: 1.1rem;">${desc}</p></div>
+                </div>`;
+                const oldModal = document.getElementById(modalId); if(oldModal) oldModal.remove();
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+            });
+            document.getElementById('dynamic-certificates').innerHTML = c_html || '<p>لا توجد شهادات.</p>';
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                if (translations[lang][el.getAttribute('data-i18n')]) el.innerHTML = translations[lang][el.getAttribute('data-i18n')];
+            });
+        };
+
+        document.addEventListener('DOMContentLoaded', loadAllData);
+    </script>
+</body>
+</html>
