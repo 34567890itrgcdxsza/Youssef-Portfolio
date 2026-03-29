@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Portfolio Template</title>
+    <style>
+        :root { 
+            --gold: #e5d25c; --bg-primary: #0f172a; --bg-secondary: #1e293b; 
+            --text-primary: #f8fafc; --text-secondary: #94a3b8; 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-primary); color: var(--text-primary); display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 250px; background: var(--bg-secondary); padding: 20px; border-right: 1px solid rgba(255,255,255,0.05); }
+        .sidebar h2 { color: var(--gold); margin-bottom: 30px; font-size: 1.5rem; text-align: center; }
+        .nav-btn { display: block; width: 100%; padding: 12px 15px; margin-bottom: 10px; background: transparent; color: var(--text-secondary); border: 1px solid transparent; border-radius: 8px; cursor: pointer; text-align: left; font-size: 1rem; transition: 0.3s; }
+        .nav-btn:hover, .nav-btn.active { background: rgba(229, 210, 92, 0.1); color: var(--gold); border-color: var(--gold); }
+
+        /* Main Content */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px; }
+        
+        /* Forms & Cards */
+        .card { background: var(--bg-secondary); padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.05); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--gold); font-weight: 600; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-primary); color: #fff; outline: none; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); }
+        
+        .btn { background: var(--gold); color: #0f172a; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-danger { background: #ef4444; color: white; }
+        
+        /* Data Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { color: var(--gold); }
+        
+        /* Login Overlay */
+        #login-overlay { position: fixed; inset: 0; background: var(--bg-primary); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: var(--bg-secondary); padding: 40px; border-radius: 15px; width: 100%; max-width: 400px; text-align: center; border: 1px solid var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2 style="color: var(--gold); margin-bottom: 20px;">Admin Login</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
+                Note for template users: Configure Firebase Authentication to secure this dashboard.
+            </p>
+            <div class="form-group">
+                <input type="email" id="adminEmail" placeholder="Email Address">
+            </div>
+            <div class="form-group">
+                <input type="password" id="adminPassword" placeholder="Password">
+            </div>
+            <button class="btn" style="width: 100%;" onclick="mockLogin()">Login</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <button class="nav-btn active" onclick="switchTab('settings')">⚙️ General Settings</button>
+        <button class="nav-btn" onclick="switchTab('projects')">📁 Manage Projects</button>
+        <button class="nav-btn" onclick="switchTab('services')">✨ Manage Services</button>
+        <button class="nav-btn" onclick="switchTab('resume')">📄 Manage Resume</button>
+        <button class="nav-btn" style="margin-top: 50px; color: #ef4444;" onclick="logout()">🚪 Logout</button>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard Overview</h1>
+            <p id="admin-status" style="color: var(--gold);">Connected to: YOUR_PROJECT_ID</p>
+        </div>
+
+        <div id="settings-tab" class="tab-content card">
+            <h3 style="margin-bottom: 20px; color: var(--gold);">General Site Settings</h3>
+            <form id="settingsForm">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Hero Title (English)</label>
+                        <input type="text" id="hero_en" placeholder="e.g. I'M JOHN DOE">
+                    </div>
+                    <div class="form-group">
+                        <label>Hero Title (Arabic)</label>
+                        <input type="text" id="hero_ar" placeholder="مثال: أنا فلان">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Main CV Link (Google Drive / PDF)</label>
+                    <input type="url" id="cv_link" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn">Save Settings</button>
+            </form>
+        </div>
+
+        <div id="projects-tab" class="tab-content card" style="display: none;">
+            <h3 style="margin-bottom: 20px; color: var(--gold);">Add New Project</h3>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label>Project Title (EN)</label>
+                    <input type="text" id="proj_title_en" required>
+                </div>
+                <div class="form-group">
+                    <label>Description (EN)</label>
+                    <textarea id="proj_desc_en" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" id="proj_img" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn">Add Project</button>
+            </form>
+
+            <h3 style="margin-top: 40px; margin-bottom: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">Existing Projects</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="projectsTableBody">
+                    <tr><td colspan="2" style="text-align: center; color: var(--text-secondary);">Loading projects...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // 🛑 ضع مفاتيح Firebase الخاصة بك هنا 🛑
+        const firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // === UI Logic ===
+        window.switchTab = function(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            event.currentTarget.classList.add('active');
+        };
+
+        // Basic Mock Login for the open-source template demonstration
+        window.mockLogin = function() {
+            const email = document.getElementById('adminEmail').value;
+            if(email) {
+                document.getElementById('login-overlay').style.display = 'none';
+                loadData(); // Load data only after login
+            } else {
+                alert("Please enter an email to test the dashboard.");
+            }
+        };
+
+        window.logout = function() {
+            document.getElementById('login-overlay').style.display = 'flex';
+        };
+
+        // === Firebase CRUD Logic Blueprint ===
+
+        // 1. Load Data
+        async function loadData() {
+            try {
+                // Load Settings
+                const docSnap = await getDoc(doc(db, "settings", "general"));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    document.getElementById('hero_en').value = data.hero_en || '';
+                    document.getElementById('hero_ar').value = data.hero_ar || '';
+                    document.getElementById('cv_link').value = data.cv_link || '';
+                }
+
+                // Load Projects into Table
+                const querySnapshot = await getDocs(collection(db, "projects"));
+                let tableHTML = '';
+                querySnapshot.forEach((doc) => {
+                    const project = doc.data();
+                    tableHTML += `
+                        <tr>
+                            <td>${project.title_en || 'Untitled'}</td>
+                            <td><button class="btn btn-danger" style="padding: 5px 10px;" onclick="deleteProject('${doc.id}')">Delete</button></td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('projectsTableBody').innerHTML = tableHTML || '<tr><td colspan="2">No projects found.</td></tr>';
+            } catch(e) {
+                console.error("Error loading data: ", e);
+            }
+        }
+
+        // 2. Save Settings
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await setDoc(doc(db, "settings", "general"), {
+                    hero_en: document.getElementById('hero_en').value,
+                    hero_ar: document.getElementById('hero_ar').value,
+                    cv_link: document.getElementById('cv_link').value
+                }, { merge: true });
+                alert("Settings saved successfully!");
+            } catch(e) {
+                alert("Error saving settings: " + e.message);
+            }
+        });
+
+        // 3. Add Project
+        document.getElementById('projectForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await addDoc(collection(db, "projects"), {
+                    title_en: document.getElementById('proj_title_en').value,
+                    desc_en: document.getElementById('proj_desc_en').value,
+                    images: [document.getElementById('proj_img').value],
+                    createdAt: new Date().toISOString()
+                });
+                alert("Project added!");
+                document.getElementById('projectForm').reset();
+                loadData(); // Refresh table
+            } catch(e) {
+                alert("Error adding project: " + e.message);
+            }
+        });
+
+        // 4. Delete Project (Attached to window so inline onclick works)
+        window.deleteProject = async function(id) {
+            if(confirm("Are you sure you want to delete this project?")) {
+                try {
+                    await deleteDoc(doc(db, "projects", id));
+                    alert("Deleted successfully!");
+                    loadData(); // Refresh table
+                } catch(e) {
+                    alert("Error deleting: " + e.message);
+                }
+            }
+        };
+
+    </script>
+</body>
+</html>
